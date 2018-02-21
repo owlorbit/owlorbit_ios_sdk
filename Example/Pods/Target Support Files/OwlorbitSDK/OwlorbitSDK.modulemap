@@ -1,0 +1,6 @@
+framework module OwlorbitSDK {
+  umbrella header "OwlorbitSDK-umbrella.h"
+
+  export *
+  module * { export * }
+}

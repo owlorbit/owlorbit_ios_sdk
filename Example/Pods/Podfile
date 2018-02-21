@@ -1,0 +1,23 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
+use_frameworks!
+
+def shared_pods
+    pod 'Alamofire', '~> 4.4'
+    pod 'SwiftyJSON', '~> 3.1.4'
+    pod 'ObjectMapper', '~> 2.0'
+    pod 'AlamofireObjectMapper', '~> 4.0'
+end
+
+target 'OwlorbitSDK' do
+    shared_pods
+    pod 'OwlorbitSDK', :path => '../'
+end
+
+target 'OwlorbitSDK_Example' do
+    shared_pods
+end
+
+target 'OwlorbitSDK_Tests' do
+    shared_pods
+end

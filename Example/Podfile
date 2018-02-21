@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'OwlorbitSDK_Example' do
+  pod 'OwlorbitSDK', :path => '../'
+
+  target 'OwlorbitSDK_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
