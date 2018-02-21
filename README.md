@@ -8,7 +8,9 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-## Requirements
+## Documentation on API Routes
+
+Here is the documentation of the api routes: https://github.com/owlorbit/api
 
 ## Installation
 
