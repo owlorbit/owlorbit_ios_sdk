@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'OwlorbitSDK'
-  s.version          = '1.0.2'
+  s.version          = '1.0.3'
   s.summary          = 'This is the official SDK for Owlorbit API.'
 
   s.description      = <<-DESC
