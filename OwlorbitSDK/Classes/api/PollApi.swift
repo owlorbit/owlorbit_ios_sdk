@@ -147,6 +147,78 @@ public class PollApi {
         }
     }
     
+    class func createPoll(choices:NSMutableArray, question:String, sendUtc:String?, groupId:Int?, manualLocationEnabled:Int, resultObj:@escaping (AddPollModel) -> Void, error:@escaping (String)->Void) -> Void {
+        
+        let url:String = ProjectConstants.ApiBaseUrl.value + "/polling/create"
+        var data:[String:Any];
+        
+        data = ["choices": choices, "question":question, "manualLocationEnabled": manualLocationEnabled, "publicKey": ApiSharedHelper.sharedInstance.publicKey, "encryptedSession" : ApiSharedHelper.sharedInstance.encryptedSession, "sessionHash" : ApiSharedHelper.sharedInstance.sessionHash]
+        
+        if (groupId != nil) {
+            data["groupId"] = groupId;
+        }
+        
+        if (sendUtc != nil) {
+            data["sendUtc"] = sendUtc;
+        }
+        
+        Alamofire.request(url, method: .post, parameters: data, encoding: URLEncoding.default, headers: [:]).responseObject {
+            (response: DataResponse<AddPollModel>) in
+            
+            guard response.result.error == nil else {
+                let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                error(json!)
+                return
+            }
+            
+            if let value = response.result.value {
+                if(value.successful == nil || value.successful!){
+                    resultObj(value)
+                }else{
+                    let success:Bool = value.successful!
+                    if(!success){
+                        let message:String = value.message!
+                        error(message)
+                    }
+                }
+            } else {
+                error("Unknown issue!")
+            }
+        }
+    }
+    
+    class func cancel(pollingId:Int, resultObj:@escaping (BaseApiResponseModel) -> Void, error:@escaping (String)->Void) -> Void {
+        
+        let url:String = ProjectConstants.ApiBaseUrl.value + "/polling/cancel"
+        var data:[String:Any];
+        
+        data = ["pollingId": pollingId, "publicKey": ApiSharedHelper.sharedInstance.publicKey, "encryptedSession" : ApiSharedHelper.sharedInstance.encryptedSession, "sessionHash" : ApiSharedHelper.sharedInstance.sessionHash]
+        
+        Alamofire.request(url, method: .post, parameters: data, encoding: URLEncoding.default, headers: [:]).responseObject {
+            (response: DataResponse<BaseApiResponseModel>) in
+            
+            guard response.result.error == nil else {
+                let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                error(json!)
+                return
+            }
+            
+            if let value = response.result.value {
+                if(value.successful == nil || value.successful!){
+                    resultObj(value)
+                }else{
+                    let success:Bool = value.successful!
+                    if(!success){
+                        let message:String = value.message!
+                        error(message)
+                    }
+                }
+            } else {
+                error("Unknown issue!")
+            }
+        }
+    }
+    
     class func sendPollResponse(pollingId:Int, email:String, choiceId:Int, resultObj:@escaping (BaseApiResponseModel) -> Void, error:@escaping (String)->Void) -> Void {
         
         let url:String = ProjectConstants.ApiBaseUrl.value + "/polling/submit_choice"

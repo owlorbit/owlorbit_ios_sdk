@@ -340,6 +340,23 @@ class ViewController: UIViewController {
         scrollView.addSubview(sendPollBtn)
         py = py + 45 + 20
         
+        
+        let sendFuturePollBtn = UIButton()
+        sendFuturePollBtn.frame = CGRect(x: px+10, y: py+10, width: 200, height: 45)
+        sendFuturePollBtn.backgroundColor = UIColor.blue
+        sendFuturePollBtn.setTitle("Create Future Poll ", for: .normal)
+        sendFuturePollBtn.addTarget(self, action: #selector(createFuturePoll), for: .touchUpInside)
+        scrollView.addSubview(sendFuturePollBtn)
+        py = py + 45 + 20
+        
+        let cancelPollBtn = UIButton()
+        cancelPollBtn.frame = CGRect(x: px+10, y: py+10, width: 200, height: 45)
+        cancelPollBtn.backgroundColor = UIColor.blue
+        cancelPollBtn.setTitle("Cancel Poll ", for: .normal)
+        cancelPollBtn.addTarget(self, action: #selector(cancelPoll), for: .touchUpInside)
+        scrollView.addSubview(cancelPollBtn)
+        py = py + 45 + 20
+        
         let sendPollResponseBtn = UIButton()
         sendPollResponseBtn.frame = CGRect(x: px+10, y: py+10, width: 200, height: 45)
         sendPollResponseBtn.backgroundColor = UIColor.blue
@@ -493,7 +510,7 @@ class ViewController: UIViewController {
     
     func listLocationsByRoom() {
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.listAllLocations(roomId: 227, resultObj: {
+        owlorbit?.owlorbitApi.listAllLocations(roomId: 203, resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -509,7 +526,7 @@ class ViewController: UIViewController {
         
         let json:JSON =  JSON(["key":"pair"])
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.addLocationByEmail(email: "test@test.com", longitude: -71.01, latitude: 42.35, altitude: 1.5, metadata: json, resultObj: {
+        owlorbit?.owlorbitApi.addLocationByEmail(email: "tim.nguyen@owlorbit.com", longitude: -71.01, latitude: 42.35, altitude: 1.5, metadata: json, resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -568,7 +585,7 @@ class ViewController: UIViewController {
     func listMeetupsInRoom() {
         
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.listAllMeetupsInRoom(roomId: 226, resultObj: {
+        owlorbit?.owlorbitApi.listAllMeetupsInRoom(roomId: 201, resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -643,7 +660,7 @@ class ViewController: UIViewController {
     
     func listMessagesInRoom() {
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.listMessagesInRoom(roomId: 222, pageIndex: 0, resultObj: {
+        owlorbit?.owlorbitApi.listMessagesInRoom(roomId: 201, pageIndex: 0, resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -657,7 +674,7 @@ class ViewController: UIViewController {
     
     func sendMessage() {
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.sendMessage(roomId: 222, message: "Message send by API", resultObj: {
+        owlorbit?.owlorbitApi.sendMessage(roomId: 201, message: "Message sent by API", resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -671,7 +688,7 @@ class ViewController: UIViewController {
     
     func sendMessageByEmail() {
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.sendMessage(roomId: 222, message: "Message send by API with Email", email: "test@test.com", resultObj: {
+        owlorbit?.owlorbitApi.sendMessage(roomId: 201, message: "Message send by API with Email", email: "tim.nguyen@owlorbit.com", resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -771,10 +788,9 @@ class ViewController: UIViewController {
         })
     }
     
-    func createPoll() {
-        
+    func createFuturePoll() {
         self.webview.loadHTMLString("Loading...", baseURL: nil)
-        owlorbit?.owlorbitApi.createPoll(choices: ["Yes", "No"], question: "Test Poll from API", groupId: 13, manualLocationEnabled: 0, resultObj: {
+        owlorbit?.owlorbitApi.createPoll(choices: ["Yes", "No"], question: "Test Poll from API", sendUtc: "2521402136000", groupId: 13, manualLocationEnabled: 0, resultObj: {
             (obj) in
             
             let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
@@ -786,6 +802,34 @@ class ViewController: UIViewController {
         })
     }
     
+    func createPoll() {
+        
+        self.webview.loadHTMLString("Loading...", baseURL: nil)
+        owlorbit?.owlorbitApi.createPoll(choices: ["Yes", "No"], question: "Test Poll from API", sendUtc: nil, groupId: 13, manualLocationEnabled: 0, resultObj: {
+            (obj) in
+            
+            let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
+            self.webview.loadHTMLString(arrayJSON, baseURL: nil)
+            
+        }, error: {
+            (err) in
+            self.webview.loadHTMLString(err, baseURL: nil)
+        })
+    }
+    
+    func cancelPoll() {
+        self.webview.loadHTMLString("Loading...", baseURL: nil)
+        owlorbit?.owlorbitApi.cancelPoll(pollingId: 44, resultObj: {
+            (obj) in
+
+            let arrayJSON:String = Mapper().toJSONString(obj, prettyPrint: true)!
+            self.webview.loadHTMLString(arrayJSON, baseURL: nil)
+            
+        }, error: {
+            (err) in
+            self.webview.loadHTMLString(err, baseURL: nil)
+        })
+    }
     
     func sendPollResponse() {
         

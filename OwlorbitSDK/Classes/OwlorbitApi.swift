@@ -142,8 +142,12 @@ public class OwlorbitApi {
         PollApi.listAllPollResponses(pollingChoiceId: pollingChoiceId, resultObj:resultObj, error:error);
     }
     
-    public func createPoll(choices:NSMutableArray, question:String, groupId:Int?, manualLocationEnabled:Int, resultObj:@escaping (AddPollModel) -> Void, error:@escaping (String)->Void) {
-        PollApi.createPoll(choices: choices, question: question, groupId: groupId, manualLocationEnabled: manualLocationEnabled, resultObj:resultObj, error:error);
+    public func createPoll(choices:NSMutableArray, question:String, sendUtc:String?, groupId:Int?, manualLocationEnabled:Int, resultObj:@escaping (AddPollModel) -> Void, error:@escaping (String)->Void) {
+        PollApi.createPoll(choices: choices, question: question, sendUtc: sendUtc, groupId: groupId, manualLocationEnabled: manualLocationEnabled, resultObj:resultObj, error:error);
+    }
+    
+    public func cancelPoll(pollingId:Int, resultObj:@escaping (BaseApiResponseModel) -> Void, error:@escaping (String)->Void) {
+        PollApi.cancel(pollingId: pollingId, resultObj:resultObj, error:error);
     }
     
     public func sendPollResponse(pollingId:Int, email:String, choiceId:Int, resultObj:@escaping (BaseApiResponseModel) -> Void, error:@escaping (String)->Void) {
